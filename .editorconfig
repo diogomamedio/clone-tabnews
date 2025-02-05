@@ -1,0 +1,8 @@
+# Define esse como o arquivo raiz/principal
+root = true
+
+# Define em que tipo de arquivo essa regras serão aplicadas 
+# [*.{py,js}], se aplicaria apenas em arquivos com extensão .py e .js
+[*]
+indent_style = space
+indent_size = 2
