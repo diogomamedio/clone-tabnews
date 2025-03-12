@@ -31,7 +31,9 @@ export default {
 function getSSLValues() {
   // Verifica se tem a variavel de Ambiente para usar certificado SSL privado
   if (process.env.POSTGRES_CA) {
+    console.log(process.env.POSTGRES_CA);
     return {
+      rejectUnauthorized: false, // Permite certificados autoassinados
       ca: process.env.POSTGRES_CA,
     };
   }
