@@ -8,15 +8,8 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT,
-    // O acesso será feito sem SSL em desevolvimento pois muito bancos não suportam
-    ssl: process.env.NODE_ENV === "development" ? false : true,
-  });
-  console.log("Credencias do Postgres: ", {
-    user: process.env.POSTGRES_USER,
-    host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT,
+    // O acesso será feito SEM SSL em desevolvimento pois muito bancos não suportam
+    ssl: getSSLValues(),
   });
   //sem o Try... toda vez que uma consulta der errado ficará uma conexão aberta.
   try {
@@ -34,3 +27,14 @@ async function query(queryObject) {
 export default {
   query: query,
 };
+
+function getSSLValues() {
+  // Verifica se tem a variavel de Ambiente para usar certificado SSL privado
+  if (process.env.POSTGRES_CA) {
+    return {
+      ca: process.env.POSTGRES_CA,
+    };
+  }
+  // Verifica se é produção para usar SSL
+  return process.env.NODE_ENV === "development" ? false : true;
+}
