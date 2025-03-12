@@ -9,7 +9,6 @@ async function query(queryObject) {
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT,
   });
-  await client.connect();
   console.log("Credencias do Postgres: ", {
     user: process.env.POSTGRES_USER,
     host: process.env.POSTGRES_HOST,
@@ -19,10 +18,12 @@ async function query(queryObject) {
   });
   //sem o Try... toda vez que uma consulta der errado ficará uma conexão aberta.
   try {
+    await client.connect();
     const result = await client.query(queryObject);
     return result;
   } catch (error) {
     console.log(error);
+    throw error;
   } finally {
     await client.end();
   }
