@@ -15,9 +15,6 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT,
-    ssl: {
-      rejectUnauthorized: false, // Isso pode ser necessário para não rejeitar certificados inválidos
-    },
   });
   //sem o Try... toda vez que uma consulta der errado ficará uma conexão aberta.
   try {
