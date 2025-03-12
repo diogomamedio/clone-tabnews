@@ -33,7 +33,7 @@ function getSSLValues() {
   if (process.env.POSTGRES_CA) {
     console.log(process.env.POSTGRES_CA);
     return {
-      rejectUnauthorized: false, // Permite certificados autoassinados
+      // rejectUnauthorized: false, // Permite certificados autoassinados (inseguro)
       ca: process.env.POSTGRES_CA,
     };
   }
