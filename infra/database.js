@@ -8,6 +8,8 @@ async function query(queryObject) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
     port: process.env.POSTGRES_PORT,
+    // O acesso será feito sem SSL em desevolvimento pois muito bancos não suportam
+    ssl: process.env.NODE_ENV === "development" ? false : true,
   });
   console.log("Credencias do Postgres: ", {
     user: process.env.POSTGRES_USER,
