@@ -1,19 +1,10 @@
 import { Client } from "pg";
 
 async function query(queryObject) {
-  const client = new Client({
-    // Usa dotenv para pegar essas variáveis de ambiente
-    user: process.env.POSTGRES_USER,
-    host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT,
-    // O acesso será feito SEM SSL em desevolvimento pois muito bancos não suportam
-    ssl: getSSLValues(),
-  });
+  let client;
   //sem o Try... toda vez que uma consulta der errado ficará uma conexão aberta.
   try {
-    await client.connect();
+    client = await getNewClient();
     const result = await client.query(queryObject);
     return result;
   } catch (error) {
@@ -24,8 +15,25 @@ async function query(queryObject) {
   }
 }
 
+async function getNewClient() {
+  // Função para criar um novo cliente
+  const client = new Client({
+    // Usa dotenv para pegar essas variáveis de ambiente
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT,
+    // O acesso será feito SEM SSL em desevolvimento pois muito bancos não suportam
+    ssl: getSSLValues(),
+  });
+  await client.connect(); // Conecta ao banco
+  return client; //retorna o cliente
+}
+
 export default {
-  query: query,
+  query, // não precisa query: query pois tem o mesmo nome e o js permite exportar sem duplicar os nomes
+  getNewClient, // exporta uma nova conexão
 };
 
 function getSSLValues() {
@@ -37,6 +45,7 @@ function getSSLValues() {
       ca: process.env.POSTGRES_CA,
     };
   }
+
   // Verifica se é produção para usar SSL
-  return process.env.NODE_ENV === "development" ? false : true;
+  return process.env.NODE_ENV === "production" ? true : false;
 }
