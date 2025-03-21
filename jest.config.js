@@ -11,5 +11,6 @@ const createJestConfig = nextJest({
 });
 const jestConfig = createJestConfig({
   moduleDirectories: ["node_modules", "<rootDir>"], // permite que o jest acesse os arquivos do projeto
+  testTimeout: 60000, //tempo de espera até um teste terminar, por padrão é de 5 segundos.
 });
 module.exports = jestConfig;
