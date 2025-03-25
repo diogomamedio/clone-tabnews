@@ -1,0 +1,30 @@
+# Define o nome do fluxo
+name: Automated Tests
+
+# Qual Evento o workflow deve esperar acontecer, nesse caso quando um PR acontecer
+on: pull_request
+
+# Quando o evento for disparado, execute as ações/trabalhos abaixo
+jobs:
+  jest:
+    # Nome do Job
+    name: Jest Ubuntu
+    # Qual ambiente o job deve ser executado. O runner que irá executar os comandos
+    runs-on: ubuntu-latest
+    # Comandos que irão ser executados
+    steps:
+      # Uma action que puxa o código do repositório
+      - uses: actions/checkout@v4
+
+      # Uma action que configura o Node.js do projeto
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/hydrogen"
+
+      # Instala as dependências do projeto
+      - name: Instalar dependências
+        run: npm ci
+
+      # Executa os testes do projeto
+      - name: Rodar os testes
+        run: npm test
