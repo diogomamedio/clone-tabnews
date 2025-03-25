@@ -1,5 +1,5 @@
 function Home() {
-  return <h1>Este é o meu primeiro projeto com robot Deploy</h1>;
+  return <h1>Projeto Teste CI/CD</h1>;
 }
 
 export default Home;
