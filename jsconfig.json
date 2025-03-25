@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "." //define a pasta atual, onde está este arquivo, como base do projeto
+    //define a pasta atual, onde está este arquivo, como base do projeto
+    "baseUrl": "."
   }
 }
