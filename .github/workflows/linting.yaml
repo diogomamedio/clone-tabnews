@@ -1,0 +1,30 @@
+# Define o nome do fluxo
+name: Linting
+
+# Qual Evento o workflow deve esperar acontecer, nesse caso quando um PR acontecer
+on: pull_request
+
+# Quando o evento for disparado, execute as ações/trabalhos abaixo
+jobs:
+  prettier:
+    # Nome do Job
+    name: Prettier
+    # Qual ambiente o job deve ser executado. O runner que irá executar os comandos
+    runs-on: ubuntu-latest
+    # Comandos que irão ser executados
+    steps:
+      # Uma action que puxa o código do repositório
+      - uses: actions/checkout@v4
+
+      # Uma action que configura o Node.js do projeto
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/hydrogen"
+
+      # Instala as dependências do projeto
+      - name: Instalar dependências
+        run: npm ci
+
+      # Executa o prettier
+      - name: Roda o Prettier
+        run: npm run lint:prettier:check
